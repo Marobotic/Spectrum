@@ -1,0 +1,12 @@
+body {
+    background-color: #463020;
+}
+
+.play_btn{
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	width: 150px;
+	height: 60px;
+
+}

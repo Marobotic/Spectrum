@@ -1,0 +1,24 @@
+<html>
+
+<head>
+ <script src="jquery-3.2.1.min.js"></script>
+	<title>Spectrum</title>
+	<link rel="stylesheet" href="style-and-rainbows.css"
+</head> 
+
+	<!-- onLoad function to solve some issues-->
+<body>
+    <img class="play_btn" id="play_btn" src="drawable/play.png" />
+
+
+	<script>
+$('.play_btn').mouseover(function () {
+$("#play_btn").attr("src","drawable/play_clicked.png");
+})
+.mouseout(function () {
+$("#play_btn").attr("src","drawable/play.png");
+});
+</script>
+</body>
+
+</html>
