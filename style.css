@@ -1,0 +1,635 @@
+  body {
+      font-family: 'Arial', sans-serif;
+
+      flex-direction: column;
+      align-items: center;
+      background-color: #463020;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+  }
+
+  .main-menu,
+  .game-container,
+  .settings-container,
+  .player-names {
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+      padding: 20px;
+
+      margin-bottom: 20px;
+
+      text-align: center;
+  }
+
+  .main-menu {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+  }
+
+  button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+  }
+
+  button:hover {
+
+      transform: scale(1.05);
+  }
+
+  button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+  }
+
+  .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 122px);
+      gap: 0px;
+      /* margin: 20px auto; */
+      background-image: url(drawable/board.png);
+      background-size: contain;
+      background-repeat: no-repeat;
+  }
+
+
+  .cell {
+      width: 96px;
+      height: 95px;
+      font-family: 'xo' !important;
+      /*      background-color: rgba(255, 255, 255, 0.4);*/
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 45px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: solid 1px #d6a379;
+      transform: scale(0.99);
+  }
+
+  .cell:hover {
+      background-color: #b98c6d;
+      border: solid 1px black;
+
+  }
+
+  .cell.x {
+      color: #ff5722;
+      animation: pulse 0.5s;
+  }
+
+  .cell.o {
+      color: #2196f3;
+      animation: pulse 0.5s;
+  }
+
+  @keyframes pulse {
+      0% {
+          transform: scale(1);
+      }
+
+      50% {
+          transform: scale(1.1);
+      }
+
+      100% {
+          transform: scale(1);
+      }
+  }
+
+  .winning-cell {
+      animation: blink 0.5s 3;
+  }
+
+  @keyframes blink {
+      0% {
+          background-color: inherit;
+      }
+
+      50% {
+          background-color: rgba(255, 0, 0, 0.3);
+      }
+
+      100% {
+          background-color: inherit;
+      }
+  }
+
+  .winning-line {
+      position: absolute;
+      background-color: red;
+      z-index: 10;
+  }
+
+  .scoreboard {
+      margin-top: 20px;
+      width: 100%;
+      height: 205px;
+      padding-top: 50px;
+      border-collapse: collapse;
+      background-image: url(drawable/score_sheet.png);
+      background-size: contain;
+      background-repeat: no-repeat;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      justify-content: center;
+  }
+
+  /*  .scoreboard th,
+  .scoreboard td {
+      padding: 8px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+  }
+
+  .scoreboard th {
+      background-color: #f2f2f2;
+  }*/
+
+  .game-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      animation: fadeIn 0.5s;
+  }
+
+  @keyframes fadeIn {
+      from {
+          opacity: 0;
+      }
+
+      to {
+          opacity: 1;
+      }
+  }
+
+  .game-over-message {
+      background-color: #b98c6d;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      animation: slideIn 0.5s;
+  }
+
+  @keyframes slideIn {
+      from {
+          transform: translateY(-50px);
+          opacity: 0;
+      }
+
+      to {
+          transform: translateY(0);
+          opacity: 1;
+      }
+  }
+
+  .game-over-message h2 {
+      margin-top: 0;
+      color: #333;
+      font-size: 24px;
+  }
+
+  .game-over-buttons {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+  }
+
+  .hidden {
+      display: none;
+  }
+
+  .settings-container input {
+      font-family: 'lemonmilk';
+      padding: 8px;
+      margin: 5px;
+      width: fit-content;
+      height: 70px;
+      font-size: 35px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+  }
+
+  .lock-screen {
+      pointer-events: none;
+      opacity: 0.7;
+  }
+
+  .pulse-border {
+      animation: borderPulse 0.5s;
+  }
+
+  @keyframes borderPulse {
+      0% {
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+      }
+
+      70% {
+          box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+      }
+
+      100% {
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+      }
+  }
+
+
+  @font-face {
+      font-family: 'lemonmilk';
+      src: url("drawable/fonts/lemonmilk.otf");
+  }
+
+  @font-face {
+      font-family: 'gametime';
+      src: url("drawable/fonts/Game_Time.ttf");
+  }
+
+  @font-face {
+      font-family: 'Driftwood';
+      src: url("drawable/fonts/Driftwood.ttf");
+  }
+
+  @font-face {
+      font-family: 'xo';
+      src: url("drawable/fonts/xo.ttf");
+  }
+
+
+  @font-face {
+      font-family: 'DMSANS';
+      src: url("drawable/fonts/DMSANS.ttf");
+  }
+
+
+  #gameModeText {
+      font-family: 'DMSANS';
+  }
+
+  #winnerMessage {
+      font-family: 'gametime';
+      text-shadow:
+          -2px -2px 0 #000,
+          2px -2px 0 #000,
+          -2px 2px 0 #000,
+          2px 2px 0 #000,
+          -3px 0px 0 #000,
+          3px 0px 0 #000,
+          0px -3px 0 #000,
+          0px 3px 0 #000;
+      letter-spacing: 8px;
+
+  }
+
+
+  .header_container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+  }
+
+  .spectrum_logo {
+      background-image: url("drawable/spectrum1.png");
+      background-repeat: no-repeat;
+      width: 70px;
+      height: 70px;
+      background-size: contain;
+      cursor: pointer;
+  }
+
+  .spectrum_logo:hover {
+      filter: grayscale(1) contrast(350%);
+  }
+
+  .settings {
+      background-image: url("drawable/profile.png");
+      background-repeat: no-repeat;
+      width: 70px;
+      height: 70px;
+      cursor: pointer;
+      background-size: contain;
+  }
+
+  .settings:hover {
+      filter: grayscale(1) contrast(500%);
+  }
+
+  .spectrum_main_container {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      flex-direction: column;
+  }
+
+  .spectrum_brand {
+      background-image: url("drawable/spectrumlogo.png");
+      background-repeat: no-repeat;
+      width: 600px;
+      height: 200px;
+      cursor: pointer;
+      background-size: contain;
+      align-items: center;
+      align-self: center;
+      align-content: center;
+  }
+
+  .spectrum_brand:hover {
+      filter: grayscale(1) contrast(350%);
+  }
+
+  .spectrum_player1 {
+      font-family: 'lemonmilk';
+      color: white;
+      margin-top: 25px;
+      font-size: 40px;
+      text-transform: uppercase;
+      text-align: center;
+
+  }
+
+
+  .spectrum_play {
+      background-image: url("drawable/play.png");
+      background-repeat: no-repeat;
+      width: 180px;
+      height: 76.5px;
+      cursor: pointer;
+      background-size: contain;
+      align-items: center;
+      align-self: center;
+      align-content: center;
+      margin-top: 25px;
+  }
+
+  #saveNamesBtn{
+
+   background-image: url("drawable/save_button.png");
+      background-repeat: no-repeat;
+      width: 180px;
+      height: 76.5px;
+      background-color: unset;
+      cursor: pointer;
+      background-size: contain;
+      align-items: left;
+      align-self: left;
+      align-content: left;
+      margin-top: 25px;
+  }
+
+
+  #saveNamesBtn:hover {
+      filter: grayscale(1) contrast(350%);
+
+  }
+  .spectrum_play:hover {
+      filter: grayscale(1) contrast(350%);
+
+  }
+
+  .spectrum_game_list {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: left;
+  }
+
+  .game_card {
+
+      background-image: url("drawable/game_placeholder.png");
+      background-repeat: no-repeat;
+      width: 490px;
+      height: 250px;
+      cursor: pointer;
+      background-size: cover;
+      align-items: center;
+      align-self: center;
+      align-content: center;
+      margin-top: 25px;
+      position: relative;
+      transition: all 100ms ease-in;
+      overflow: hidden;
+      border-radius: 12px;
+
+  }
+
+  .game_card:before {
+      background: linear-gradient(transparent, rgba(0, 0, 0, .7));
+
+  }
+
+  .game_card:hover {
+      transform: scale(1.1);
+      z-index: 99999;
+  }
+
+  .game_text {
+      position: absolute;
+      left: 10px;
+      bottom: 0px;
+      color: white;
+      margin-bottom: 10px;
+      font-family: 'gametime';
+      font-size: 35px;
+      text-shadow:
+          -2px -2px 0 #000,
+          2px -2px 0 #000,
+          -2px 2px 0 #000,
+          2px 2px 0 #000,
+          -3px 0px 0 #000,
+          3px 0px 0 #000,
+          0px -3px 0 #000,
+          0px 3px 0 #000;
+
+
+  }
+
+  .game_tictactoe {
+      background-image: url("drawable/tictactoe_banner.png");
+  }
+
+  .game_hangman {
+      background-image: url("drawable/hangman_banner.png");
+  }
+
+
+  h1 {
+      color: #f3914b;
+      font-family: 'lemonmilk';
+      text-align: center;
+      justify-content: center;
+  }
+
+  .hidden {
+      display: none;
+  }
+
+  .show {
+      display: flex;
+      animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+      from {
+          opacity: 0;
+          transform: translateY(-10px);
+      }
+
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+
+  .tictactoe_container {
+      justify-content: center;
+      /*      margin-top: 50px;*/
+  }
+
+  .tictactoe_button {
+      font-family: 'gametime';
+      background-color: #daa77b;
+      border-radius: 0px;
+      font-size: 35px;
+      color: white;
+      width: 350px;
+      padding: 10px;
+      border-radius: 12px;
+      text-shadow:
+          -2px -2px 0 #000,
+          2px -2px 0 #000,
+          -2px 2px 0 #000,
+          2px 2px 0 #000,
+          -3px 0px 0 #000,
+          3px 0px 0 #000,
+          0px -3px 0 #000,
+          0px 3px 0 #000;
+
+  }
+
+
+
+  .tictactoe_button:hover {
+      color: black;
+      text-shadow:
+          -2px -2px 0 #fff,
+          2px -2px 0 #fff,
+          -2px 2px 0 #fff,
+          2px 2px 0 #fff,
+          -3px 0px 0 #fff,
+          3px 0px 0 #fff,
+          0px -3px 0 #fff,
+          0px 3px 0 #fff;
+  }
+
+  .main-menu {
+      background-color: #b98c6d;
+  }
+
+  .tictactoe_title {
+      font-family: 'gametime';
+      color: white;
+      text-shadow:
+          -2px -2px 0 #000,
+          2px -2px 0 #000,
+          -2px 2px 0 #000,
+          2px 2px 0 #000,
+          -3px 0px 0 #000,
+          3px 0px 0 #000,
+          0px -3px 0 #000,
+          0px 3px 0 #000;
+
+  }
+
+  #resetScoreBtn {
+      background-color: unset;
+      background-image: url(drawable/clear_scoreboard.png);
+      background-size: cover;
+      background-repeat: no-repeat;
+      width: 350px;
+      height: 70px;
+      color: white;
+      font-size: 18px;
+      padding-left: 20px;
+      text-align: left;
+  }
+
+
+
+  div[data-index="0"] {
+      margin-top: 29px;
+      margin-left: 30px;
+  }
+
+  div[data-index="1"] {
+      margin-left: 31px;
+      margin-top: 29px;
+  }
+
+  div[data-index="2"] {
+      margin-top: 29px;
+      margin-left: 32px;
+  }
+
+
+
+
+
+
+  div[data-index="3"] {
+      margin-top: 8px;
+      margin-left: 30px;
+  }
+
+
+  div[data-index="4"] {
+      margin-left: 31px;
+      margin-top: 8px;
+  }
+
+  div[data-index="5"] {
+      margin-left: 32px;
+      margin-top: 8px;
+  }
+
+
+
+
+
+  div[data-index="6"] {
+      margin-top: -13px;
+      margin-left: 30px;
+  }
+
+
+  div[data-index="7"] {
+      margin-top: -13px;
+      margin-left: 31px;
+  }
+
+
+  div[data-index="8"] {
+      margin-top: -13px;
+      margin-left: 32px;
+  }

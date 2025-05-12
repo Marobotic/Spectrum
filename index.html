@@ -1,24 +1,575 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
- <script src="jquery-3.2.1.min.js"></script>
-	<title>Spectrum</title>
-	<link rel="stylesheet" href="style-and-rainbows.css"
-</head> 
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectrum</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- styles for tictactoe will likely edit later -->
+    <style>
+    </style>
+    <!-- spectrum styles -->
+    <style>
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const playButton = document.querySelector(".spectrum_play");
+    const spectrumContainer = document.querySelector(".spectrum_main_container");
+    const gameTitle = document.querySelector(".game_select_title");
+    const gameList = document.querySelector(".spectrum_game_list");
+    const brand = document.querySelector(".spectrum_brand");
+    const ticTacToeContainer = document.querySelector(".tictactoe_container");
+    const ticTacToeButton = document.querySelector(".game_tictactoe");
+    const spectrumLogo = document.querySelector(".spectrum_logo");
+    
+     const gamecontainer = document.querySelector(".game-container");
+      const settingsBtn = document.querySelector(".settings");
+     const mainmenu  = document.querySelector(".main-menu");
+    const game_select_title = document.querySelector(".game_select_title"); 
+    
+     const spectrum_game_list = document.querySelector(".spectrum_game_list");
 
-	<!-- onLoad function to solve some issues-->
-<body>
-    <img class="play_btn" id="play_btn" src="drawable/play.png" />
+    if (playButton && gameTitle && gameList && brand && ticTacToeContainer && ticTacToeButton && spectrumLogo) {
+        playButton.addEventListener("click", function() {
+            gameTitle.classList.toggle("show");
+            gameList.classList.toggle("show");
+            spectrumContainer.classList.add("hidden");
+            mainmenu.classList.add("hidden");
 
+        });
 
-	<script>
-$('.play_btn').mouseover(function () {
-$("#play_btn").attr("src","drawable/play_clicked.png");
-})
-.mouseout(function () {
-$("#play_btn").attr("src","drawable/play.png");
+        ticTacToeButton.addEventListener("click", function() {
+            gameTitle.classList.remove("show");
+            gameList.classList.remove("show");
+            ticTacToeContainer.classList.add("show"); // Ensures tic-tac-toe container is visible
+             ticTacToeContainer.classList.remove("hidden");
+              mainmenu.classList.remove("hidden");
+             settingsBtn.classList.add("hidden");
+             settingsBtn.classList.remove("show");
+
+            
+            // Change body background
+            document.body.style.backgroundImage = "url('drawable/tictactoe_background.png')";
+            document.body.style.backgroundSize = "cover";
+            document.body.style.backgroundPosition = "center";
+
+        });
+
+        spectrumLogo.addEventListener("click", function() {
+            // Hide tic-tac-toe container
+            ticTacToeContainer.classList.remove("show");
+    ticTacToeContainer.classList.add("hidden");
+
+            // Show spectrum container again
+            spectrumContainer.classList.remove("hidden");
+            gamecontainer.classList.add("hidden")
+            spectrum_game_list.classList.remove("show");
+            game_select_title.classList.remove("show");
+             settingsBtn.classList.add("show");
+
+            // Remove background image
+            document.body.style.backgroundImage = "none";
+
+        });
+    } else {
+        console.error("One or more elements not found");
+    }
 });
 </script>
+</head>
+
+<body>
+    <header>
+        <div class="header_container">
+            <div class="spectrum_logo"> </div>
+            <div class="spectrum settings" id="settingsBtn"> </div>
+        </div>
+    </header>
+    <div class="spectrum_main_container">
+        <div class="spectrum_brand"> </div>
+        <div class="spectrum_player1" id="spectrum_player1"> Hello, player </div>
+        <div class="spectrum_play"> </div>
+    </div>
+    <h1 class="game_select_title hidden">Select a game to start </h1>
+    <div class="spectrum_game_list hidden">
+        <div class="game_tictactoe game_card">
+            <p class="game_text">Tic Tac Toe </p>
+        </div>
+        <div class="game_hangman game_card">
+            <p class="game_text">Hangman</p>
+        </div>
+        <div class="game_rockpaperscissors game_card">
+            <p class="game_text">Rock Paper scissors </p>
+        </div>
+        <div class="game_tetris game_card">
+            <p class="game_text">Tetris </p>
+        </div>
+    </div>
+    <div class="settings-container hidden" id="settingsContainer">
+        <h1>Settings</h1>
+        <h2 style="color:white; text-align: left;"> Add username for customized experience</h2>
+        <p style="color:#999999; text-align: left;">Usernames are saved locally, we do not store userdata </p>
+        <div class="player-names">
+            <input type="text" id="player1Name" placeholder="Player 1 Name">
+            <input type="text" id="player2Name" placeholder="Player 2 Name">
+        </div>
+        <button id="saveNamesBtn"></button>
+        <button style=" display:none ;" id="backToMenuBtn">Back to Menu</button>
+    </div>
+    <div class="tictactoe_container hidden">
+        <div class="main-menu" id="mainMenu">
+            <h1 class="tictactoe_title">Tic Tac Toe</h1>
+            <button class="tictactoe_button" id="singlePlayerBtn">Single Player (vs AI)</button>
+            <button class="tictactoe_button" id="twoPlayerBtn">Two Players</button>
+            <!-- <button class="tictactoe_button">Settings</button> -->
+        </div>
+        <div class="game-container hidden" id="gameContainer">
+            <h2 id="gameModeText"></h2>
+            <div id="board" class="board"></div>
+            <div id="winningLine" class="winning-line"></div>
+            <div class="scoreboard">
+                <div class="player_score_div">
+                    <p id="player1Header"> </p>
+                    <p id="player1Score"> </p>
+                </div>
+                <div class="player_score_div">
+                    <p id="player2Header"> </p>
+                    <p id="player2Score"> </p>
+                </div>
+            </div>
+            <button id="resetScoreBtn">Reset Scoreboard</button>
+            <button class="tictactoe_button" id="backToMenuGameBtn">Back to Main Menu</button>
+        </div>
+        <div id="gameOverOverlay" class="game-overlay hidden">
+            <div class="game-over-message">
+                <h2 style="color: white;" id="winnerMessage"></h2>
+                <div class="game-over-buttons">
+                    <button class="tictactoe_button" id="playAgainBtn">Play Another Round</button>
+                    <button class="tictactoe_button" id="backToMenuOverlayBtn">Back to Main Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    // Game state
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let currentPlayer = 'X';
+    let gameActive = true;
+    let gameMode = ''; // 'single' or 'multi'
+    let scores = { player1: 0, player2: 0 };
+    let playerNames = { player1: 'Player 1', player2: 'Player 2' };
+    let isAITurn = false;
+
+    // DOM elements
+    const mainMenu = document.getElementById('mainMenu');
+    const settingsContainer = document.getElementById('settingsContainer');
+    const gameContainer = document.getElementById('gameContainer');
+    const gameModeText = document.getElementById('gameModeText');
+    const boardElement = document.getElementById('board');
+    const winningLine = document.getElementById('winningLine');
+    const player1Header = document.getElementById('player1Header');
+    const spectrum_player1 = document.getElementById('spectrum_player1');
+    const player2Header = document.getElementById('player2Header');
+    const player1Score = document.getElementById('player1Score');
+    const player2Score = document.getElementById('player2Score');
+    const resetScoreBtn = document.getElementById('resetScoreBtn');
+    const gameOverOverlay = document.getElementById('gameOverOverlay');
+    const winnerMessage = document.getElementById('winnerMessage');
+
+    // Buttons
+    const singlePlayerBtn = document.getElementById('singlePlayerBtn');
+    const twoPlayerBtn = document.getElementById('twoPlayerBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const saveNamesBtn = document.getElementById('saveNamesBtn');
+    const backToMenuBtn = document.getElementById('backToMenuBtn');
+    const backToMenuGameBtn = document.getElementById('backToMenuGameBtn');
+    const playAgainBtn = document.getElementById('playAgainBtn');
+    const backToMenuOverlayBtn = document.getElementById('backToMenuOverlayBtn');
+
+    // Initialize the game
+    function initGame() {
+        // Load saved data
+        const savedScores = localStorage.getItem('ticTacToeScores');
+        const savedNames = localStorage.getItem('ticTacToePlayerNames');
+
+        if (savedScores) {
+            scores = JSON.parse(savedScores);
+        }
+
+        if (savedNames) {
+            playerNames = JSON.parse(savedNames);
+        }
+
+        updateScoreboard();
+
+        // Create board cells
+        boardElement.innerHTML = '';
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            cell.setAttribute('data-index', i);
+            cell.addEventListener('click', () => handleCellClick(i));
+            boardElement.appendChild(cell);
+        }
+
+        // Event listeners
+        singlePlayerBtn.addEventListener('click', () => startGame('single'));
+        twoPlayerBtn.addEventListener('click', () => startGame('multi'));
+        settingsBtn.addEventListener('click', showSettings);
+        saveNamesBtn.addEventListener('click', savePlayerNames);
+        backToMenuBtn.addEventListener('click', showMainMenu);
+        backToMenuGameBtn.addEventListener('click', showMainMenu);
+        resetScoreBtn.addEventListener('click', resetScoreboard);
+        playAgainBtn.addEventListener('click', resetGame);
+        backToMenuOverlayBtn.addEventListener('click', showMainMenu);
+
+        // Set player names in settings
+        document.getElementById('player1Name').value = playerNames.player1;
+        document.getElementById('player2Name').value = playerNames.player2;
+
+
+        spectrum_player1.textContent = "welcome, " + playerNames.player1;
+    }
+
+    // Start a new game
+    function startGame(mode) {
+        gameMode = mode;
+        resetGame();
+
+        if (mode === 'single') {
+            gameModeText.textContent = `${playerNames.player1} vs AI`;
+            player1Header.textContent = playerNames.player1;
+            player2Header.textContent = 'AI';
+        } else {
+            gameModeText.textContent = `${playerNames.player1} vs ${playerNames.player2}`;
+            player1Header.textContent = playerNames.player1;
+            player2Header.textContent = playerNames.player2;
+        }
+
+        mainMenu.classList.add('hidden');
+        gameContainer.classList.remove('hidden');
+    }
+    const playButton = document.querySelector(".spectrum_play");
+    const spectrumContainer = document.querySelector(".spectrum_main_container");
+    const gameTitle = document.querySelector(".game_select_title");
+    const gameList = document.querySelector(".spectrum_game_list");
+    const brand = document.querySelector(".spectrum_brand");
+    const ticTacToeContainer = document.querySelector(".tictactoe_container");
+    const ticTacToeButton = document.querySelector(".game_tictactoe");
+    const spectrumLogo = document.querySelector(".spectrum_logo");
+    const game_select_title = document.querySelector(".game_select_title");
+    const spectrum_game_list = document.querySelector(".spectrum_game_list");
+    // Show settings
+    function showSettings() {
+        mainMenu.classList.add('hidden');
+        settingsContainer.classList.remove('hidden');
+        spectrumContainer.classList.add("hidden")
+        spectrumContainer.classList.remove("show")
+        spectrum_game_list.classList.remove("show");
+        game_select_title.classList.remove("show");
+    }
+
+    // Save player names
+    function savePlayerNames() {
+        const newPlayer1Name = document.getElementById('player1Name').value.trim() || 'Player 1';
+        const newPlayer2Name = document.getElementById('player2Name').value.trim() || 'Player 2';
+        const playButton = document.querySelector(".spectrum_play");
+        const spectrumContainer = document.querySelector(".spectrum_main_container");
+        const gameTitle = document.querySelector(".game_select_title");
+        const gameList = document.querySelector(".spectrum_game_list");
+        const brand = document.querySelector(".spectrum_brand");
+        const ticTacToeContainer = document.querySelector(".tictactoe_container");
+        const ticTacToeButton = document.querySelector(".game_tictactoe");
+        const spectrumLogo = document.querySelector(".spectrum_logo");
+
+        // Check if names changed to reset scores
+        if (newPlayer1Name !== playerNames.player1 || newPlayer2Name !== playerNames.player2) {
+            scores = { player1: 0, player2: 0 };
+            updateScoreboard();
+        }
+
+        playerNames = {
+            player1: newPlayer1Name,
+            player2: newPlayer2Name
+        };
+
+        localStorage.setItem('ticTacToePlayerNames', JSON.stringify(playerNames));
+        localStorage.setItem('ticTacToeScores', JSON.stringify(scores));
+
+        // showMainMenu();
+        // Show spectrum container again
+        spectrumContainer.classList.remove("hidden");
+        gameList.classList.remove("show");
+        game_select_title.classList.remove("show");
+        settingsContainer.classList.add('hidden');
+        // Remove background image
+        document.body.style.backgroundImage = "none";
+
+        setTimeout(() => {
+    location.reload();
+}, 1000); // Refreshes after 3 seconds
+
+    }
+
+    // Show main menu
+    function showMainMenu() {
+        settingsContainer.classList.add('hidden');
+        gameContainer.classList.add('hidden');
+        gameOverOverlay.classList.add('hidden');
+        mainMenu.classList.remove('hidden');
+    }
+
+    // Handle cell click
+    function handleCellClick(index) {
+        if (!gameActive || board[index] !== '' || (gameMode === 'single' && currentPlayer === 'O' && isAITurn)) {
+            return;
+        }
+
+        // Add pulse animation to clicked cell
+        const cell = boardElement.children[index];
+        cell.classList.add('pulse-border');
+        setTimeout(() => cell.classList.remove('pulse-border'), 500);
+
+        makeMove(index);
+
+        // AI move in single player mode
+        if (gameMode === 'single' && gameActive && currentPlayer === 'O') {
+            isAITurn = true;
+            boardElement.classList.add('lock-screen');
+
+            setTimeout(() => {
+                const bestMove = findBestMove();
+                makeMove(bestMove);
+                isAITurn = false;
+                boardElement.classList.remove('lock-screen');
+            }, 500);
+        }
+    }
+
+    // Make a move
+    function makeMove(index) {
+        board[index] = currentPlayer;
+        const cell = boardElement.children[index];
+
+        if (currentPlayer === 'X') {
+            cell.classList.add('x');
+            cell.textContent = 'X';
+        } else {
+            cell.classList.add('o');
+            cell.textContent = 'O';
+        }
+
+        const winningCombination = checkWin();
+        if (winningCombination) {
+            handleWin(winningCombination);
+        } else if (board.every(cell => cell !== '')) {
+            handleDraw();
+        } else {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+    }
+
+    // Check for win
+    function checkWin() {
+        const winPatterns = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8], // rows
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8], // columns
+            [0, 4, 8],
+            [2, 4, 6] // diagonals
+        ];
+
+        for (const pattern of winPatterns) {
+            const [a, b, c] = pattern;
+            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                return pattern;
+            }
+        }
+
+        return null;
+    }
+
+    // Handle win
+    function handleWin(winningCombination) {
+        gameActive = false;
+
+        // Highlight winning cells
+        for (const index of winningCombination) {
+            boardElement.children[index].classList.add('winning-cell');
+        }
+
+        // Draw winning line
+        drawWinningLine(winningCombination);
+
+        // Update scores
+        if (currentPlayer === 'X') {
+            scores.player1++;
+        } else {
+            scores.player2++;
+        }
+
+        updateScoreboard();
+        localStorage.setItem('ticTacToeScores', JSON.stringify(scores));
+
+        // Show game over overlay
+        setTimeout(() => {
+            let winner;
+            if (gameMode === 'single') {
+                winner = currentPlayer === 'X' ? playerNames.player1 : 'AI';
+            } else {
+                winner = currentPlayer === 'X' ? playerNames.player1 : playerNames.player2;
+            }
+
+            winnerMessage.textContent = `${winner} wins!`;
+            gameOverOverlay.classList.remove('hidden');
+        }, 500);
+    }
+
+    // Draw winning line
+    function drawWinningLine(winningCombination) {
+        const [a, b, c] = winningCombination;
+        const cellSize = 100;
+        const gap = 5;
+        const boardRect = boardElement.getBoundingClientRect();
+
+        // Calculate positions
+        const getPosition = (index) => {
+            const row = Math.floor(index / 3);
+            const col = index % 3;
+            return {
+                x: col * (cellSize + gap) + cellSize / 2,
+                y: row * (cellSize + gap) + cellSize / 2
+            };
+        };
+
+        const posA = getPosition(a);
+        const posB = getPosition(c); // We draw from first to last winning cell
+
+        // Determine line properties
+        const angle = Math.atan2(posB.y - posA.y, posB.x - posA.x);
+        const length = Math.sqrt(Math.pow(posB.x - posA.x, 2) + Math.pow(posB.y - posA.y, 2));
+
+        // Create line
+        winningLine.style.width = `${length}px`;
+        winningLine.style.height = '4px';
+        winningLine.style.left = `${posA.x + boardRect.left - document.body.getBoundingClientRect().left}px`;
+        winningLine.style.top = `${posA.y + boardRect.top - document.body.getBoundingClientRect().top}px`;
+        winningLine.style.transform = `rotate(${angle}rad)`;
+        winningLine.style.transformOrigin = '0 0';
+    }
+
+    // Handle draw
+    function handleDraw() {
+        gameActive = false;
+        setTimeout(() => {
+            winnerMessage.textContent = "It's a draw!";
+            gameOverOverlay.classList.remove('hidden');
+        }, 500);
+    }
+
+    // Reset game
+    function resetGame() {
+        board = ['', '', '', '', '', '', '', '', ''];
+        currentPlayer = 'X';
+        gameActive = true;
+        isAITurn = false;
+
+        // Clear board
+        Array.from(boardElement.children).forEach(cell => {
+            cell.textContent = '';
+            cell.classList.remove('x', 'o', 'winning-cell');
+        });
+
+        // Clear winning line
+        winningLine.style.width = '0';
+
+        // Hide game over overlay
+        gameOverOverlay.classList.add('hidden');
+        boardElement.classList.remove('lock-screen');
+    }
+
+    // Update scoreboard
+    function updateScoreboard() {
+        player1Score.textContent = scores.player1;
+        player2Score.textContent = scores.player2;
+    }
+
+    // Reset scoreboard
+    function resetScoreboard() {
+        if (confirm('Are you sure you want to reset the scoreboard?')) {
+            scores = { player1: 0, player2: 0 };
+            updateScoreboard();
+            localStorage.setItem('ticTacToeScores', JSON.stringify(scores));
+        }
+    }
+
+    // AI logic - Minimax algorithm for unbeatable AI
+    function findBestMove() {
+        // Easy mode - sometimes makes random moves
+        // Hard mode - always makes the best move
+
+        // First check if AI can win in the next move
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === '') {
+                board[i] = 'O';
+                if (checkWin()) {
+                    board[i] = '';
+                    return i;
+                }
+                board[i] = '';
+            }
+        }
+
+        // Check if player can win in the next move and block them
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === '') {
+                board[i] = 'X';
+                if (checkWin()) {
+                    board[i] = '';
+                    return i;
+                }
+                board[i] = '';
+            }
+        }
+
+        // Try to take center if available
+        if (board[4] === '') return 4;
+
+        // Try to take corners
+        const corners = [0, 2, 6, 8];
+        const availableCorners = corners.filter(i => board[i] === '');
+        if (availableCorners.length > 0) {
+            // Prefer corners that lead to a win
+            for (const corner of availableCorners) {
+                board[corner] = 'O';
+                const tempWin = checkWin();
+                board[corner] = '';
+                if (tempWin) return corner;
+            }
+
+            // Otherwise take a random corner
+            return availableCorners[Math.floor(Math.random() * availableCorners.length)];
+        }
+
+        // Take any available edge
+        const edges = [1, 3, 5, 7];
+        const availableEdges = edges.filter(i => board[i] === '');
+        if (availableEdges.length > 0) {
+            return availableEdges[Math.floor(Math.random() * availableEdges.length)];
+        }
+
+        // Fallback (shouldn't reach here if board isn't full)
+        return board.indexOf('');
+    }
+
+    // Initialize the game when the page loads
+    window.addEventListener('DOMContentLoaded', initGame);
+    </script>
 </body>
 
 </html>
